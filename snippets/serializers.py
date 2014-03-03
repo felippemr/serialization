@@ -10,7 +10,7 @@ class SnippetSerializer(serializers.Serializer):
 
 	def restore_object(self, attrs, instance=None):
 		"""
-		Create or update a new snippet instance, given a directory
+		Create or update a new snippet instance, given a dictionary
 		of deserialized field values.
 
 		Note that if we don't define this method, then deserializing
