@@ -3,11 +3,8 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 admin.autodiscover()
 
-urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'serialization.views.home', name='home'),
-    # url(r'^blog/', include('blog.urls')),
-
+urlpatterns = patterns('snippets.views',
+    url(r'^snippets/$', 'snippet_list')
+    url(r'^snippets/(?P<pk>[0-9]+)/$', 'snippet_detail')
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^', include('snippets.urls')),
    )
