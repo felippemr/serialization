@@ -1,4 +1,4 @@
-from django.htttp import HttpResponse
+from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
@@ -15,34 +15,16 @@ class JSONResponse(HttpResponse):
 		kwargs['content_type'] = 'application/json'
 		super(JSONResponse, self).__init__(content, **kwargs)
 
-@csrf_exempt
-def snippet_list(request):
-           """
-	List all code snippets, or create a new snippet.
-	"""
-
-	if request.method == 'GET':
-	 	snippets  = Snippet.objects.all()
-		serializer = SnippetSerializer(snippets, many=true)
-		return JSONResponse(serializer.data)
-
-	elif request.method == 'POST':
-		data = JSONParser().parse(request)
-		serializer = SnippetSerializer(data=data)
-		if serializer.is_valid():
-			serializer.save()
-			return JSONResponse(serializer.data, status=201)
-		return JSONResponse(serializer.data, status=400)
 
 @csrf_exempt
-def snippet_detail(request):
+def snippet_detail(request, pk=None):
 	"""
 	Retrieve, update, delete a code snippet.
 	"""
 	try:
 		snippet = Snippet.objects.get(pk=pk)
 	except Snippet.DoesNotExist:
-		return(HttpResponse, status=404)
+		return HttpResponse(status=404)
 
 	if request.method == 'GET' :
 		serializer = SnippetSerializer(snippet)
@@ -59,3 +41,21 @@ def snippet_detail(request):
 	elif request.method == 'DELETE' :
 		snippet.delete()
 		return HttpResponse(status=204)
+
+@csrf_exempt
+def snippet_list(request):
+    	"""
+    	List all code snippets, or create a new snippet.
+    	"""
+    	if request.method == 'GET' :
+        		snippets = Snippet.objects.all()
+        		serializer = SnippetSerializer(snippets, many=True)
+        		return JSONResponse(serializer.data)
+
+    	elif request.method == 'POST' :
+        		data = JSONParser().parse(request)
+        		serializer = SnippetSerializer(data=data)
+        		if serializer.is_valid():
+        			serializer.save()
+            		return JSONResponse(serializer.data, status=201)
+        		return JSONResponse(serializer.errors, status=400)
