@@ -17,7 +17,7 @@ class SnippetSerializer(serializers.ModelSerializer):
 		Note that if we don't define this method, then deserializing
 		data will simply return a dictionary of items.
 		"""
-                      owner = serializers.Field(source='owner.username')
+		owner = serializers.Field(source='owner.username')
 		if instance:
 			instance.title = attrs.get('title', instance.title)
 			instance.code = attrs.get('code', instance.code)
@@ -32,4 +32,4 @@ class UserSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model = User
-		fields = ('id,'' 'username', 'snippets)'
+		fields = ('id','username', 'snippets')
